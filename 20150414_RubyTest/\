@@ -1,0 +1,78 @@
+require 'test/unit'
+require File.join('./test2.rb')
+
+class VattleTest < Test::Unit::TestCase
+
+		def test_vattle
+				person1 = Fighter.new(100, 100, "塚本")
+				person2 = Wizard.new(100, 100, "菅野")
+				v = Vattle.new(person1, person2)
+				assert_equal "菅野", v.winner
+		end
+end
+
+class WeakeTest < Test::Unit::TestCase
+
+		def test_weake_Fighter_vs_Fighter
+				person1 = Fighter.new(100, 100, "塚本")
+				person2 = Fighter.new(100, 100, "菅野")
+				weake = Weake.new(person1, person2)	
+				assert_equal weake.weake_late, [1.0, 1.0]
+		end
+
+		def test_weake_Fighter_vs_Wizard
+				person1 = Fighter.new(100, 100, "塚本")
+				person2 = Wizard.new(100, 100, "菅野")
+				weake = Weake.new(person1, person2)	
+				assert_equal weake.weake_late, [0.85, 1.0]
+		end
+
+		def test_weake_Fighter_vs_Priest
+				person1 = Fighter.new(100, 100, "塚本")
+				person2 = Priest.new(100, 100, "菅野")
+				weake = Weake.new(person1, person2)	
+				assert_equal weake.weake_late, [1.0, 1.0]
+		end
+
+		def test_weake_Wizard_vs_Fighter
+				person1 = Wizard.new(100, 100, "塚本")
+				person2 = Fighter.new(100, 100, "菅野")
+				weake = Weake.new(person1, person2)	
+				assert_equal weake.weake_late, [1.0, 1.0]
+		end
+
+		def test_weake_Wizard_vs_Wizard
+				person1 = Wizard.new(100, 100, "塚本")
+				person2 = Wizard.new(100, 100, "菅野")
+				weake = Weake.new(person1, person2)	
+				assert_equal weake.weake_late, [1.0, 1.0]
+		end
+
+		def test_weake_Wizard_vs_Priest
+				person1 = Wizard.new(100, 100, "塚本")
+				person2 = Priest.new(100, 100, "菅野")
+				weake = Weake.new(person1, person2)	
+				assert_equal weake.weake_late, [1.0, 0.75]
+		end
+
+		def test_weake_Priest_vs_Fighter
+				person1 = Priest.new(100, 100, "塚本")
+				person2 = Fighter.new(100, 100, "菅野")
+				weake = Weake.new(person1, person2)	
+				assert_equal weake.weake_late, [0.95, 0.90]
+		end
+
+		def test_weake_Priest_vs_Wizard
+				person1 = Priest.new(100, 100, "塚本")
+				person2 = Wizard.new(100, 100, "菅野")
+				weake = Weake.new(person1, person2)	
+				assert_equal weake.weake_late, [1.0, 1.0]
+		end
+
+		def test_weake_Priest_vs_Priest
+				person1 = Priest.new(100, 100, "塚本")
+				person2 = Priest.new(100, 100, "菅野")
+				weake = Weake.new(person1, person2)	
+				assert_equal weake.weake_late, [1.0, 1.0]
+		end
+end
