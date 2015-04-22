@@ -99,7 +99,7 @@ class BattleView
     def initialize(battle)
         @battle = battle
     end
-    
+
     def display_result
         puts "#{battle.person1.name}(#{battle.person1.class}) VS #{battle.person2.name}(#{battle.person2.class})"
         if battle.winner
@@ -107,6 +107,7 @@ class BattleView
         else
             puts "引き分けです"
         end
+    end
 end
 
 person1 = Fighter.new(100, 100, "塚本")
