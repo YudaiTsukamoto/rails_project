@@ -2,7 +2,7 @@ def prime_number_proc
     primes = []
 
     f = Proc.new do
-        primes.size == 0 ? number = 2 : number = primes[-1] + 1 
+        number = primes[-1].to_i + 1 
         loop do
             if prime?(number)
                 primes << number 
@@ -17,7 +17,7 @@ end
 
 def prime?(number)
     return true if number == 2
-    return false if number % 2 == 0
+    return false if number < 2 || number % 2 == 0
 
     3.step(Math.sqrt(number), 2) do |num|
         if number % num == 0

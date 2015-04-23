@@ -64,25 +64,27 @@ end
 
 class BattleController
     attr_reader :battle_model, :battle_view
-    def initialize(battle_model, battle_view)
-        @battle_model = battle_model
-        @battle_view = battle_view
+    def initialize(person1, person2)
+        @battle_model = BattleModel.new(person1, person2)
+        @battle_view = BattleView.new(battle_model)
     end
 
-    def battle_start
-        battle_model.battle
+    def battle
+        battle_view.display_start
+        battle_model.battle_start
         battle_view.display_result
     end
+
 end
 
-class BattleModle
+class BattleModel
     attr_reader :person1, :person2, :winner
     def initialize(person1, person2)
         @person1 = person1
         @person2 = person2
     end
 
-    def battle 
+    def battle_start 
         person1.conpensate_status(person2)
         person2.conpensate_status(person1)
 
@@ -95,25 +97,25 @@ class BattleModle
 end
 
 class BattleView 
-    attr_reader :battle
-    def initialize(battle)
-        @battle = battle
+    attr_reader :battle_model
+    def initialize(battle_model)
+        @battle_model = battle_model
+    end
+
+    def display_start
+        puts "#{battle_model.person1.name}(#{battle_model.person1.class}) VS #{battle_model.person2.name}(#{battle_model.person2.class})"
     end
 
     def display_result
-        puts "#{battle.person1.name}(#{battle.person1.class}) VS #{battle.person2.name}(#{battle.person2.class})"
-        if battle.winner
-            puts "勝者 : #{battle.winner.name}(#{battle.winner.class})"
+        if battle_model.winner
+            puts "勝者 : #{battle_model.winner.name}(#{battle_model.winner.class})"
         else
             puts "引き分けです"
         end
     end
 end
 
-person1 = Fighter.new(100, 100, "塚本")
-person2 = Wizard.new(100, 100, "菅野")
-person3 = Priest.new(100, 100, "加藤")
-battle_model = BattleModle.new(person3, person2)
-battle_view = BattleView.new(battle_model)
-battle_controller = BattleController.new(battle_model, battle_view)
-battle_controller.battle_start
+    person1 = Fighter.new(100, 100, "塚本")
+    person2 = Wizard.new(100, 100, "菅野")
+    battle_controller = BattleController.new(person1, person2)
+    battle_controller.battle
