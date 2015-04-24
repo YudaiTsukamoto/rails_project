@@ -9,12 +9,12 @@ class Person
 
     def conpensate_status(vs_person)
         if self.instance_of?(Fighter) && vs_person.instance_of?(Wizard)
-            @strength = base_strength * 0.85
+            @strength = strength * 0.85
         elsif self.instance_of?(Wizard) && vs_person.instance_of?(Priest)
-            @cleverness = base_cleverness * 0.75
+            @cleverness = cleverness * 0.75
         elsif self.instance_of?(Priest) && vs_person.instance_of?(Fighter)
-            @strength = base_strength * 0.95
-            @cleverness = base_cleverness * 0.90
+            @strength = strength * 0.95
+            @cleverness = cleverness * 0.90
         end
     end
 
@@ -26,12 +26,12 @@ end
 class Fighter < Person
     alias base_strength strength
     def strength
-        base_strength * 1.5
+        @strengh = base_strength * 1.5
     end
 
     alias base_cleverness cleverness
     def cleverness
-        base_cleverness * 1.0
+        @cleverness = base_cleverness * 1.0
     end
 
 end
@@ -39,24 +39,24 @@ end
 class Wizard < Person
     alias base_strength strength
     def strength
-        base_strength * 0.5
+        @strength * 0.5
     end
 
     alias base_cleverness cleverness
     def cleverness
-        base_cleverness * 3.0
+        @cleverness * 3.0
     end
 end
 # 1.Priestクラスを追加する
 class Priest < Person
     alias base_strength strength
     def strength
-        base_strength * 1.0
+        @strength * 1.0
     end
 
     alias base_cleverness cleverness
     def cleverness
-        base_cleverness * 2.0
+        @cleverness * 2.0
     end
 end
 
@@ -115,7 +115,7 @@ class BattleView
     end
 end
 
-person1 = Fighter.new(100, 100, "塚本")
-person2 = Wizard.new(100, 100, "菅野")
-battle_controller = BattleController.new(person1, person2)
-battle_controller.battle
+    person1 = Priest.new(100, 100, "塚本")
+    person2 = Wizard.new(100, 100, "菅野")
+    battle_controller = BattleController.new(person1, person2)
+    battle_controller.battle
