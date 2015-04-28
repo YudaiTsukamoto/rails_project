@@ -23,8 +23,12 @@ class PostsController < ApplicationController
   def update
     @user = User.find(params[:user_id])
     @post = @user.posts.find(params[:id])
-    @post.update_attributes(post_params)
-    redirect_to user_post_path(@user,@post)
+    if @post.update_attributes(post_params)
+      flash[:success] = "Profile updated"
+      redirect_to user_post_path(@user,@post)
+    else
+      render 'edit'
+    end
   end
 
   def destroy
