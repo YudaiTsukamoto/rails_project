@@ -3,13 +3,13 @@ Rails.application.routes.draw do
    resources :posts, except: :index
   end
   resource :sessions, only: [:new, :create, :destroy]
+  resource :comments, only:[:create, :edit, :destroy]
 
   root 'welcome#index'
   match '/signup', to: 'users#new', via: 'get'
   match '/signin', to: 'sessions#new', via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'delete'
-end
-
+  end
 # The priority is based upon order of creation: first created -> highest priority.
 # See how all your routes lay out with "rake routes".
 
