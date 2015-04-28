@@ -5,10 +5,9 @@ class Person
     @cleverness = cl
     @name = name
   end
-
-  def battle_power
-    @battle_power = strength + cleverness
-  end
+  # def battle_power
+  #   @battle_power = strength + cleverness
+  # end
 end
 
 class Fighter < Person
@@ -21,18 +20,11 @@ class Fighter < Person
     @strength = base_strength * 1.5
   end
 
-
-  def strength
-    @strength
-  end
-
-  def cleverness
-    @cleverness
-  end
-
-  def conpensate_status(vs_person)
+  def conpensate_rate(vs_person)
     if vs_person.instance_of?(Wizard)
-      @strength = strength * 0.85
+      @conpensate_rate = { strength: 0.85, cleverness: 1.0 }
+    else
+      @conpensate_rate = { strength: 1.0, cleverness: 1.0 }
     end
   end
 end
@@ -48,17 +40,11 @@ class Wizard < Person
     @cleverness = base_cleverness * 3.0
   end
 
-  def strength
-    @strength
-  end
-
-  def cleverness
-    @cleverness
-  end
-
-  def conpensate_status(vs_person)
+  def conpensate_rate(vs_person)
     if vs_person.instance_of?(Priest)
-      @cleverness = cleverness * 0.75
+      @conpensate_rate = { strength: 1.0, cleverness: 0.75 }
+    else
+      @conpensate_rate = { strength: 1.0, cleverness: 1.0 }
     end
   end
 end
@@ -73,78 +59,57 @@ class Priest < Person
     @cleverness = base_cleverness * 2.0
   end
 
-
-  def strength
-    @strength
-  end
-
-  def cleverness
-    @cleverness
-  end
-
-  def conpensate_status(vs_person)
-    if vs_person.instance_of?(Fighter)
-      @strength = base_strength * 0.95
-      @cleverness = base_cleverness * 0.90
+  def conpensate_rate(vs_person)
+    if vs_person.instance_of?(Priest)
+      @conpensate_rate = { strength: 0.95, cleverness: 0.90 }
+    else
+      @conpensate_rate = { strength: 1.0, cleverness: 1.0 }
     end
   end
 end
 
 # 2.1対1の対戦機能を実装する
 
-class BattleController
-  attr_reader :battle_model, :battle_view
-  def initialize(person1, person2)
-    @battle_model = BattleModel.new(person1, person2)
-    @battle_view = BattleView.new(battle_model)
-  end
-
-  def battle
-    battle_view.display_start
-    battle_model.battle_start
-    battle_view.display_result
-  end
-end
-
-class BattleModel
+class Battle
   attr_reader :person1, :person2, :winner
+
   def initialize(person1, person2)
     @person1 = person1
     @person2 = person2
   end
 
-  def battle_start
-    person1.conpensate_status(person2)
-    person2.conpensate_status(person1)
-
-    if person1.battle_power > person2.battle_power
-      return  @winner = person1
-    elsif person1.battle_power < person2.battle_power
-      return  @winner =  person2
-    end
-  end
-end
-
-class BattleView
-  attr_reader :battle_model
-  def initialize(battle_model)
-    @battle_model = battle_model
+  def battle
+    battle_power1 = battle_power(person1, person2)
+    battle_power2 = battle_power(person2, person1)
+    @winner = judge(battle_power1, battle_power2)
   end
 
-  def display_start
-    puts "#{battle_model.person1.name}(#{battle_model.person1.class}) VS #{battle_model.person2.name}(#{battle_model.person2.class})"
+  def battle_power(myself, vs_person)
+    conpensate_rate = myself.conpensate_rate(vs_person)
+    conpensate_strength = myself.strength * conpensate_rate[:strength]
+    conpensate_cleverness = myself.cleverness * conpensate_rate[:cleverness]
+    conpensate_strength + conpensate_cleverness
   end
 
-  def display_result
-    if battle_model.winner
-      puts "勝者 : #{battle_model.winner.name}(#{battle_model.winner.class})"
-    else
-      puts "引き分けです"
+  def judge(battle_power1, battle_power2)
+    if battle_power1 > battle_power2
+      return person1
+      elsif battle_power1 < battle_power2
+      return person2
     end
   end
 end
 
 person1 = Fighter.new(100, 100, "塚本")
-person2 = Priest.new(100, 100, "菅野")
-battle_controller = BattleController.new(person1, person2)
-battle_controller.battle
+person2 = Wizard.new(100, 100, "菅野")
+# p person1.conpensate_status(person2)
+# battle_controller = BattleController.new(person1, person2)
+# battle_controller.battle
+b1 = Battle.new(person1, person2)
+b1.battle
+puts "#{person1.name}(#{person1.class}) VS #{person2.name}(#{person2.class})"
+puts "Winner : #{b1.winner.name}(#{b1.winner.class})"
+b2 = Battle.new(person1, person2)
+puts "#{person1.name}(#{person1.class}) VS #{person2.name}(#{person2.class})"
+b2.battle
+puts "Winner : #{b2.winner.name}(#{b2.winner.class})"

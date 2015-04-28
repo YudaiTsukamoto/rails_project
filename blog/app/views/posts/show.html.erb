@@ -4,22 +4,4 @@
 
 <%= simple_format @post.body %>
 
-<h2>Comment Add</h2>
-<%= form_for(@comments.build) do |f| %>
-  <p>
-  <%= f.label :commenter %>
-  <%= f.text_field :commenter %>
-  </p>
-
-  <p>
-  <%= f.label :context, "comment" %>
-  <%= f.text_area :body, cols: 60, rows:8 %>
-  </p>
-
-  <p>
-  <%= f.submit "comment" %>
-  </p>
-<% end %>
-
-  <%= link_to "User Page", @user %>
-  </p>
+<%= link_to "User Page", @user %>
