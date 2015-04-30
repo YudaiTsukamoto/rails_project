@@ -1,5 +1,9 @@
 class Person
   attr_reader :strength, :cleverness, :name
+
+  alias base_strength strength
+  alias base_cleverness cleverness
+
   def initialize(st, cl, name)
     @strength = st
     @cleverness = cl
@@ -8,14 +12,11 @@ class Person
 end
 
 class Fighter < Person
-  alias base_strength strength
-  alias base_cleverness cleverness
-
   def strength
     base_strength * 1.5
   end
 
-  def conpensate_rate(vs_person)
+  def compensate_rate(vs_person)
     if vs_person.instance_of?(Wizard)
       return { strength: 0.85, cleverness: 1.0 }
     else
@@ -25,9 +26,6 @@ class Fighter < Person
 end
 
 class Wizard < Person
-  alias base_strength strength
-  alias base_cleverness cleverness
-
   def strength
     base_strength * 0.5
   end
@@ -36,7 +34,7 @@ class Wizard < Person
     base_cleverness * 3.0
   end
 
-  def conpensate_rate(vs_person)
+  def compensate_rate(vs_person)
     if vs_person.instance_of?(Priest)
       return { strength: 1.0, cleverness: 0.75 }
     else
@@ -46,14 +44,11 @@ class Wizard < Person
 end
 
 class Priest < Person
-  alias base_strength strength
-  alias base_cleverness cleverness
-
   def cleverness
     base_cleverness * 2.0
   end
 
-  def conpensate_rate(vs_person)
+  def compensate_rate(vs_person)
     if vs_person.instance_of?(Fighter)
       return { strength: 0.95, cleverness: 0.90 }
     else
@@ -79,11 +74,11 @@ class Battle
     @winner = judge(battle_power1, battle_power2)
   end
 
-  def battle_power(myself, vs_person)
-    conpensate_rate = myself.conpensate_rate(vs_person)
-    conpensate_strength = myself.strength * conpensate_rate[:strength]
-    conpensate_cleverness = myself.cleverness * conpensate_rate[:cleverness]
-    conpensate_strength + conpensate_cleverness
+  def battle_power(oneself, vs_person)
+    compensate_rate = oneself.compensate_rate(vs_person)
+    compensate_strength = oneself.strength * compensate_rate[:strength]
+    compensate_cleverness = oneself.cleverness * compensate_rate[:cleverness]
+    compensate_strength + compensate_cleverness
   end
 
   def judge(battle_power1, battle_power2)
