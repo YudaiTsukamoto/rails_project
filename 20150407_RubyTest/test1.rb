@@ -1,5 +1,5 @@
 a = [ 1 , 1 ]
-n = '' 
+n = ''
 loop do
 		puts " フィボナッチ数列の項数を入力して下さい "
 		n = gets.chomp.to_i
