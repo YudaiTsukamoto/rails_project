@@ -1,7 +1,6 @@
 def prime_number_proc
   primes = []
-
-  f = proc do
+  proc do
     if primes.any?
       number = primes.last + 1
     else
@@ -16,7 +15,6 @@ def prime_number_proc
     end
     primes
   end
-  f
 end
 
 def prime?(number)
