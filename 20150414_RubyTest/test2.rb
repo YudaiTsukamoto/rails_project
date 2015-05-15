@@ -63,16 +63,15 @@ class Battle
   def initialize(person1, person2)
     @person1 = person1
     @person2 = person2
-    battle
   end
-
-  private
 
   def battle
     battle_power1 = battle_power(person1, person2)
     battle_power2 = battle_power(person2, person1)
     @winner = judge(battle_power1, battle_power2)
   end
+
+  private
 
   def battle_power(oneself, vs_person)
     compensate_rate = oneself.compensate_rate(vs_person)
