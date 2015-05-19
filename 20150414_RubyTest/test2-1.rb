@@ -18,9 +18,6 @@ class Person
         end
     end
 
-    def battle_power
-        @battle_power = strength + cleverness 
-    end
 end
 
 class Fighter < Person
