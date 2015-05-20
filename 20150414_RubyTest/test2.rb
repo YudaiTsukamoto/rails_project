@@ -9,6 +9,10 @@ class Person
     @cleverness = cl
     @name = name
   end
+
+  def battle_power(vs_person)
+    strength + cleverness
+  end
 end
 
 class Fighter < Person
@@ -16,11 +20,11 @@ class Fighter < Person
     base_strength * 1.5
   end
 
-  def compensate_rate(vs_person)
-    if vs_person.instance_of?(Wizard)
-      return { strength: 0.85, cleverness: 1.0 }
+  def battle_power(vs_person)
+    if vs_person.is_a?(Wizard)
+      strength * 0.85 + cleverness
     else
-      return { strength: 1.0, cleverness: 1.0 }
+      super
     end
   end
 end
@@ -34,11 +38,11 @@ class Wizard < Person
     base_cleverness * 3.0
   end
 
-  def compensate_rate(vs_person)
-    if vs_person.instance_of?(Priest)
-      return { strength: 1.0, cleverness: 0.75 }
+  def battle_power(vs_person)
+    if vs_person.is_a?(Priest)
+      strength + cleverness * 0.75
     else
-      return { strength: 1.0, cleverness: 1.0 }
+      super
     end
   end
 end
@@ -48,59 +52,31 @@ class Priest < Person
     base_cleverness * 2.0
   end
 
-  def compensate_rate(vs_person)
-    if vs_person.instance_of?(Fighter)
-      return { strength: 0.95, cleverness: 0.90 }
+  def battle_power(vs_person)
+    if vs_person.is_a?(Fighter)
+      strength * 0.95 + cleverness * 0.90
     else
-      return { strength: 1.0, cleverness: 1.0 }
+      super
     end
   end
 end
 
-class Battle
-  attr_reader :person1, :person2, :winner
-
-  def initialize(person1, person2)
-    @person1 = person1
-    @person2 = person2
-  end
-
-  def battle
-    battle_power1 = battle_power(person1, person2)
-    battle_power2 = battle_power(person2, person1)
-    @winner = judge(battle_power1, battle_power2)
-  end
-
-  private
-
-  def battle_power(oneself, vs_person)
-    compensate_rate = oneself.compensate_rate(vs_person)
-    compensate_strength = oneself.strength * compensate_rate[:strength]
-    compensate_cleverness = oneself.cleverness * compensate_rate[:cleverness]
-    compensate_strength + compensate_cleverness
-  end
-
-  def judge(battle_power1, battle_power2)
-    if battle_power1 > battle_power2
-      return person1
-    elsif battle_power1 < battle_power2
-      return person2
-    else
-      return nil
-    end
-  end
-end
-
-def result(battle)
-  puts "#{battle.person1.name} (#{battle.person1.class}) VS #{battle.person2.name} (#{battle.person2.class})"
-  if battle.winner
-    puts "Winner : #{battle.winner.name} (#{battle.winner.class})"
+def battle(person1, person2)
+  if person1.battle_power(person2) == person2.battle_power(person1)
+    return nil
+  elsif person1.battle_power(person2) > person2.battle_power(person1)
+    return person1
   else
-    puts 'A drawn match.'
+    return person2
   end
 end
 
-person1 = Priest.new(100, 100, 'Tsukamoto')
-person2 = Wizard.new(100, 100, 'Kanno')
-battle1 = Battle.new(person1, person2)
-result(battle1)
+fighter = Fighter.new(100, 100, 'Yudai')
+wizard = Wizard.new(100, 100, 'Hisaki')
+winner = battle(fighter, wizard)
+
+if !winner
+  puts "引き分け"
+else
+  puts "Winner : #{winner.name}(#{winner.class})"
+end

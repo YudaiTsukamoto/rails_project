@@ -2,72 +2,109 @@ require 'test/unit'
 require File.join('./test2.rb')
 
 class VattleTest < Test::Unit::TestCase
+  def setup
+    @person = Person.new(100, 100, 'Person')
+    @fighter = Fighter.new(100, 100, 'Fighter')
+    @wizard = Wizard.new(100, 100, 'Wizard')
+    @priest = Priest.new(100, 100, 'Priest')
+  end
 
-	def setup
-		person1 = Fighter.new(100, 100, "塚本")
-		person2 = Wizard.new(100, 100, "菅野")
-		@battle = Battle.new(person1, person2)
-	end
+# Personクラスのテスト
+  def test_person_new_false
+    assert_raise(ArgumentError) do
+    person = Person.new(100, 100)
+    end
+  end
 
-	def test_judge
-		assert_equal "菅野", @battle.judge
-	end
+  def test_person_strength
+    assert_equal(@person.strength, 100)
+  end
 
-	def test_battle
+  def test_person_cleverness
+    assert_equal(@person.cleverness, 100)
+  end
 
-	end
-end
+  def test_person_name
+    assert_equal(@person.name, 'Person')
+  end
 
-class WeakeTest < Test::Unit::TestCase
+  def test_person_base_strength
+    assert_equal(@person.base_strength, 100)
+  end
 
-	def setup
-		person1 = Fighter.new(100, 100, "塚本")
-		person2 = Wizard.new(100, 100, "塚本")
-		person3 = Priest.new(100, 100, "塚本")
-		@weakening1 = Weakening.new(person1, person1)
-		@weakening2 = Weakening.new(person1, person2)
-		@weakening3 = Weakening.new(person1, person3)
-		@weakening4 = Weakening.new(person2, person1)
-		@weakening5 = Weakening.new(person2, person2)
-		@weakening6 = Weakening.new(person2, person3)
-		@weakening7 = Weakening.new(person3, person1)
-		@weakening8 = Weakening.new(person3, person2)
-		@weakening9 = Weakening.new(person3, person3)
-	end
+  def test_person_base_cleverness
+    assert_equal(@person.base_cleverness, 100)
+  end
 
-	def test_weakening_Fighter_vs_Fighter
-		assert_equal @weakening1.weakening_rate, [1.0, 1.0]
-	end
+  def test_person_battle_power
+    assert_equal(@person.battle_power(@person), 200)
+  end
 
-	def test_weakening_Fighter_vs_Wizard
-		assert_equal @weakening2.weakening_rate, [0.85, 1.0]
-	end
+  def test_person_battle_power_false
+    assert_raise(ArgumentError) do
+      @person.battle_power
+    end
+  end
 
-	def test_weakening_Fighter_vs_Priest
-		assert_equal @weakening3.weakening_rate, [1.0, 1.0]
-	end
+# Fighterクラスのテスト
+  def test_fighter_strength
+    assert_equal(@fighter.strength, 150)
+  end
 
-	def test_weakening_Wizard_vs_Fighter
-		assert_equal @weakening4.weakening_rate, [1.0, 1.0]
-	end
+  def test_fighter_weakened_battle_power
+    assert_equal(@fighter.battle_power(@wizard), 227.5)
+  end
 
-	def test_weakening_Wizard_vs_Wizard
-		assert_equal @weakening5.weakening_rate, [1.0, 1.0]
-	end
+  def test_fighter_battle_power_false
+    assert_raise(ArgumentError) do
+      @fighter.battle_power
+    end
+  end
 
-	def test_weakening_Wizard_vs_Priest
-		assert_equal @weakening6.weakening_rate, [1.0, 0.75]
-	end
+# Wizardクラスのテスト
+  def test_wizard_strength
+    assert_equal(@wizard.strength, 50)
+  end
 
-	def test_weakening_Priest_vs_Fighter
-		assert_equal @weakening7.weakening_rate, [0.95, 0.90]
-	end
+  def test_wizard_cleverness
+    assert_equal(@wizard.cleverness, 300)
+  end
 
-	def test_weakening_Priest_vs_Wizard
-		assert_equal @weakening8.weakening_rate, [1.0, 1.0]
-	end
+  def test_wizard_weakened_battle_power
+    assert_equal(@wizard.battle_power(@priest), 275)
+  end
 
-	def test_weakening_Prist_vs_Priest
-		assert_equal @weakening9.weakening_rate, [1.0, 1.0]
-	end
+  def test_wizard_battle_power_false
+    assert_raise(ArgumentError) do
+      @wizard.battle_power
+    end
+  end
+
+# priestクラスのテスト
+  def test_priest_cleverness
+    assert_equal(@priest.cleverness, 200)
+  end
+
+  def test_priest_weakened_battle_power
+    assert_equal(@priest.battle_power(@fighter), 275)
+  end
+
+  def test_priest_battle_power_false
+    assert_raise(ArgumentError) do
+      @priest.battle_power
+    end
+  end
+
+# battleメソッドのテスト
+  def test_draw_battle
+    assert_equal(battle(@fighter, @fighter), nil)
+  end
+
+  def test_battle_winner_is_person1
+    assert_equal(battle(@wizard, @fighter), @wizard)
+  end
+
+  def test_battle_winner_is_person2
+    assert_equal(battle(@wizard, @priest), @priest)
+  end
 end
