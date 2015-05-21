@@ -13,6 +13,16 @@ class Person
   def battle_power(vs_person)
     strength + cleverness
   end
+
+  def battle(vs_person)
+    if battle_power(vs_person) == vs_person.battle_power(self)
+      return nil
+    elsif battle_power(vs_person) > vs_person.battle_power(self)
+      return self
+    else
+      vs_person
+    end
+  end
 end
 
 class Fighter < Person
@@ -73,10 +83,10 @@ end
 
 fighter = Fighter.new(100, 100, 'Yudai')
 wizard = Wizard.new(100, 100, 'Hisaki')
-winner = battle(fighter, wizard)
+winner = fighter.battle(wizard)
 
 if !winner
-  puts "引き分け"
+  puts "Draw"
 else
   puts "Winner : #{winner.name}(#{winner.class})"
 end
