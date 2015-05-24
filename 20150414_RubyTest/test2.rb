@@ -5,6 +5,12 @@ class Person
   alias base_cleverness cleverness
 
   def initialize(st, cl, name)
+    raise ArgumentError.new("strength should be positive number") if st <= 0
+    raise ArgumentError.new("cleverness should be positive number") if cl <= 0
+    raise ArgumentError.new("strength should be integer") unless st.integer?
+    raise ArgumentError.new("cleverness should be integer") unless cl.integer?
+    raise ArgumentError.new("name should be string") unless name.is_a?(String)
+
     @strength = st
     @cleverness = cl
     @name = name
@@ -27,12 +33,12 @@ end
 
 class Fighter < Person
   def strength
-    base_strength * 1.5
+    (base_strength * 1.5).round
   end
 
   def battle_power(vs_person)
     if vs_person.is_a?(Wizard)
-      strength * 0.85 + cleverness
+      (strength * 0.85 + cleverness).round
     else
       super
     end
@@ -41,7 +47,7 @@ end
 
 class Wizard < Person
   def strength
-    base_strength * 0.5
+    (base_strength * 0.5).round
   end
 
   def cleverness
@@ -50,7 +56,7 @@ class Wizard < Person
 
   def battle_power(vs_person)
     if vs_person.is_a?(Priest)
-      strength + cleverness * 0.75
+      (strength + cleverness * 0.75).round
     else
       super
     end
@@ -64,7 +70,7 @@ class Priest < Person
 
   def battle_power(vs_person)
     if vs_person.is_a?(Fighter)
-      strength * 0.95 + cleverness * 0.90
+      (strength * 0.95 + cleverness * 0.90).round
     else
       super
     end
@@ -81,12 +87,12 @@ def battle(person1, person2)
   end
 end
 
-fighter = Fighter.new(100, 100, 'Yudai')
-wizard = Wizard.new(100, 100, 'Hisaki')
-winner = fighter.battle(wizard)
-
-if !winner
-  puts "Draw"
-else
-  puts "Winner : #{winner.name}(#{winner.class})"
-end
+# fighter = Fighter.new(100, 100, 'Yudai')
+# wizard = Wizard.new(100, 100, 'Hisaki')
+# winner = fighter.battle(wizard)
+#
+# if !winner
+#   puts "Draw"
+# else
+#   puts "Winner : #{winner.name}(#{winner.class})"
+# end
