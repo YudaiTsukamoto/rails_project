@@ -87,9 +87,11 @@ def battle(person1, person2)
   end
 end
 
-# fighter = Fighter.new(100, 100, 'Yudai')
-# wizard = Wizard.new(100, 100, 'Hisaki')
-# winner = fighter.battle(wizard)
+# fighter = Fighter.new(1000, 2226, 'Yudai')
+# wizard = Wizard.new(1000, 1000, 'Hisaki')
+# p fighter.battle_power(wizard)
+# p wizard.battle_power(fighter)
+# p winner = fighter.battle(wizard)
 #
 # if !winner
 #   puts "Draw"
