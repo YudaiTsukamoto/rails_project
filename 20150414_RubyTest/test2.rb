@@ -5,11 +5,13 @@ class Person
   alias base_cleverness cleverness
 
   def initialize(st, cl, name)
-    raise ArgumentError.new("strength should be positive number") if st <= 0
-    raise ArgumentError.new("cleverness should be positive number") if cl <= 0
-    raise ArgumentError.new("strength should be integer") unless st.integer?
-    raise ArgumentError.new("cleverness should be integer") unless cl.integer?
+    # raise ArgumentError.new("strength should be positive number") if st <= 0
+    # raise ArgumentError.new("cleverness should be positive number") if cl <= 0
+    raise ArgumentError.new("strength should be integer") unless st.is_a?(Integer)
+    raise ArgumentError.new("cleverness should be integer") unless cl.is_a?(Integer)
     raise ArgumentError.new("name should be string") unless name.is_a?(String)
+    raise ArgumentError.new("strength should  be number  100 and over") if st < 100
+    raise ArgumentError.new("cleverness should be number 100 and over") if cl < 100
 
     @strength = st
     @cleverness = cl
@@ -78,6 +80,7 @@ class Priest < Person
 end
 
 def battle(person1, person2)
+  raise ArgumentError.new("Same person can't not battle") if person1 == person2
   if person1.battle_power(person2) == person2.battle_power(person1)
     return nil
   elsif person1.battle_power(person2) > person2.battle_power(person1)
@@ -86,15 +89,3 @@ def battle(person1, person2)
     return person2
   end
 end
-
-# fighter = Fighter.new(1000, 2226, 'Yudai')
-# wizard = Wizard.new(1000, 1000, 'Hisaki')
-# p fighter.battle_power(wizard)
-# p wizard.battle_power(fighter)
-# p winner = fighter.battle(wizard)
-#
-# if !winner
-#   puts "Draw"
-# else
-#   puts "Winner : #{winner.name}(#{winner.class})"
-# end
