@@ -10,8 +10,9 @@ gem 'bcrypt-ruby'
 # gem 'sqlite3'
 # # Use SCSS for stylesheets
 group :development, :test do
-    gem 'sqlite3'
-      gem 'rspec-rails'
+  gem 'sqlite3'
+  gem 'rspec-rails'
+  gem 'rspec-its'
 end
 
 gem 'sass-rails', '~> 5.0'
