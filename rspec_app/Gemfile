@@ -31,7 +31,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 group :test do
-  gem 'selenium-webdriver', '2.35.1'
+  gem 'selenium-webdriver'
   gem 'capybara'
 end
 # Use ActiveModel has_secure_password
