@@ -7,3 +7,4 @@
 主に[Ruby on Rails チュートリアル](http://railstutorial.jp/chapters/beginning?version=4.0#sec-rubygems)を中心として学習を行う
 
 revertの練習
+revertされても残る行
