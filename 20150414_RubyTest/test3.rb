@@ -1,7 +1,7 @@
 require 'test/unit'
 require File.join('./test2.rb')
 
-class VattleTest < Test::Unit::TestCase
+class BattleTest < Test::Unit::TestCase
   def setup
     @person = Person.new(1000, 1000, 'Person')
     @fighter = Fighter.new(1000, 1000, 'Fighter')
