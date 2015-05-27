@@ -1,7 +1,0 @@
-<h1>Title 【<%= @post.title %>】</h1>
-<%= link_to "Edit", edit_user_post_path(@user,@post) %>
-<%= link_to "Delete", user_post_path(@user,@post), method: :delete, confirm: "Are you sure?" %>
-
-<%= simple_format @post.body %>
-
-<%= link_to "User Page", @user %>
