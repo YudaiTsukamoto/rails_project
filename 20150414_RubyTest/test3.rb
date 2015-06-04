@@ -21,7 +21,7 @@ class BattleTest < Test::Unit::TestCase
     end
   end
 
-  def test_person_strength_should__be_number_100_and_over
+  def test_person_strength_should_be_number_100_and_over
     assert_raise(ArgumentError) do
       Person.new(99, 1000, 'person')
     end
